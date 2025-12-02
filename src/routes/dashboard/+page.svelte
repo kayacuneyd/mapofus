@@ -1,5 +1,5 @@
 <script>
-  import { Plus, Download, CreditCard, Clock } from 'lucide-svelte';
+  import { Plus, Download, CreditCard, Clock, Map } from 'lucide-svelte';
   
   export let data;
   let { maps } = data;

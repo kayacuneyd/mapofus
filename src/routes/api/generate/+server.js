@@ -10,20 +10,69 @@ const generateSchema = z.object({
   start_date: z.string().optional()
 });
 
-// Mock Google Imagen API for now since we don't have the SDK installed or configured
-// In a real implementation, you would import the Google AI SDK
+// Fallback to Gemini for SVG generation since Imagen requires Vertex AI setup
 async function generateImage(prompt) {
-  // This is a placeholder. In production, use the actual Google Imagen API.
-  // const genAI = new GoogleGenerativeAI(GOOGLE_API_KEY);
-  // const model = genAI.getGenerativeModel({ model: "gemini-pro-vision" }); ...
+  // Using gemini-pro as it is the most stable and widely available model
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GOOGLE_API_KEY}`;
   
-  // Simulating API call delay
-  await new Promise(resolve => setTimeout(resolve, 2000));
+  const svgPrompt = `${prompt} 
   
-  return {
-    thumbnail: "https://via.placeholder.com/512x512?text=Map+Preview",
-    hd: "https://via.placeholder.com/1024x1024?text=HD+Map"
-  };
+  CRITICAL INSTRUCTION: You are an AI map generator. Create a highly detailed, artistic SVG map based on the story.
+  - Output ONLY the raw SVG code. 
+  - Do NOT use markdown code blocks (no \`\`\`xml or \`\`\`svg).
+  - Do NOT add any introductory or concluding text.
+  - The SVG must be 1024x1024 viewbox.
+  - Use beautiful colors and gradients matching the theme.
+  - Include stylized text labels for key locations mentioned.`;
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      contents: [{ parts: [{ text: svgPrompt }] }]
+    })
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    console.error('Google API Error:', errorData);
+    throw new Error(errorData.error?.message || `API Error: ${response.statusText}`);
+  }
+
+  const data = await response.json();
+  let text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+  
+  if (!text) {
+    throw new Error('No data received from Gemini API');
+  }
+
+  // Cleanup markdown if present
+  text = text.replace(/```svg/g, '').replace(/```xml/g, '').replace(/```/g, '').trim();
+  
+  return { data: text, type: 'image/svg+xml' };
+}
+
+async function uploadToStorage(supabase, userId, imageData, contentType) {
+  const buffer = Buffer.from(imageData);
+  const ext = 'svg';
+  const fileName = `${userId}/${Date.now()}.${ext}`;
+
+  const { data, error } = await supabase.storage
+    .from('maps')
+    .upload(fileName, buffer, {
+      contentType: contentType,
+      upsert: false
+    });
+
+  if (error) throw error;
+
+  const { data: { publicUrl } } = supabase.storage
+    .from('maps')
+    .getPublicUrl(fileName);
+
+  return publicUrl;
 }
 
 export async function POST({ request, locals }) {
@@ -43,7 +92,7 @@ export async function POST({ request, locals }) {
     
     const { story_text, theme, locations, start_date } = result.data;
 
-    // Rate Limiting: Check last map creation time
+    // Rate Limiting
     const { data: lastMap } = await locals.supabase
       .from('maps')
       .select('created_at')
@@ -57,18 +106,21 @@ export async function POST({ request, locals }) {
       const now = new Date().getTime();
       const diffMinutes = (now - lastTime) / 1000 / 60;
       
-      if (diffMinutes < 5) {
-        return json({ error: 'Lütfen yeni bir harita oluşturmadan önce 5 dakika bekleyin.' }, { status: 429 });
+      if (diffMinutes < 0.5) { // Reduced for testing
+        return json({ error: 'Lütfen biraz bekleyin.' }, { status: 429 });
       }
     }
 
     // 1. Build Prompt
     const prompt = buildImagenPrompt({ story_text, theme, locations, start_date });
 
-    // 2. Generate Image (Mocked)
-    const images = await generateImage(prompt);
+    // 2. Generate Image (SVG via Gemini)
+    const { data: imageContent, type: contentType } = await generateImage(prompt);
 
-    // 3. Save to Database
+    // 3. Upload to Supabase Storage
+    const imageUrl = await uploadToStorage(locals.supabase, session.user.id, imageContent, contentType);
+
+    // 4. Save to Database
     const { data, error } = await locals.supabase
       .from('maps')
       .insert({
@@ -76,8 +128,8 @@ export async function POST({ request, locals }) {
         story_text,
         story_metadata: { theme, locations, start_date },
         ai_prompt: prompt,
-        thumbnail_url: images.thumbnail,
-        hd_image_url: images.hd,
+        thumbnail_url: imageUrl,
+        hd_image_url: imageUrl,
         payment_status: 'pending'
       })
       .select()
@@ -91,6 +143,6 @@ export async function POST({ request, locals }) {
     return json(data);
   } catch (err) {
     console.error('Generation Error:', err);
-    return json({ error: 'Internal Server Error' }, { status: 500 });
+    return json({ error: err.message || 'Internal Server Error' }, { status: 500 });
   }
 }

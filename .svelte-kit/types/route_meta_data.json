@@ -1,0 +1,55 @@
+{
+	"/": [
+		"src/routes/+layout.js",
+		"src/routes/+layout.server.js",
+		"src/routes/+layout.js",
+		"src/routes/+layout.server.js"
+	],
+	"/admin": [
+		"src/routes/admin/+page.server.js",
+		"src/routes/+layout.js",
+		"src/routes/+layout.server.js"
+	],
+	"/api/admin/maps/[id]": [
+		"src/routes/api/admin/maps/[id]/+server.js"
+	],
+	"/api/download/[id]": [
+		"src/routes/api/download/[id]/+server.js"
+	],
+	"/api/generate": [
+		"src/routes/api/generate/+server.js"
+	],
+	"/api/payment-webhook": [
+		"src/routes/api/payment-webhook/+server.js"
+	],
+	"/auth/login": [
+		"src/routes/auth/login/+page.server.js",
+		"src/routes/+layout.js",
+		"src/routes/+layout.server.js"
+	],
+	"/auth/logout": [
+		"src/routes/auth/logout/+page.server.js",
+		"src/routes/+layout.js",
+		"src/routes/+layout.server.js"
+	],
+	"/auth/register": [
+		"src/routes/auth/register/+page.server.js",
+		"src/routes/+layout.js",
+		"src/routes/+layout.server.js"
+	],
+	"/create": [
+		"src/routes/create/+page.server.js",
+		"src/routes/+layout.js",
+		"src/routes/+layout.server.js"
+	],
+	"/dashboard": [
+		"src/routes/dashboard/+page.server.js",
+		"src/routes/+layout.js",
+		"src/routes/+layout.server.js"
+	],
+	"/preview/[id]": [
+		"src/routes/preview/[id]/+page.server.js",
+		"src/routes/+layout.js",
+		"src/routes/+layout.server.js"
+	]
+}
