@@ -127,8 +127,8 @@
                 <div class="mt-4 bg-blue-50 border border-blue-200 rounded-md p-3">
                   <h5 class="text-sm font-medium text-blue-900 mb-2">Ödeme Talimatları:</h5>
                   <ol class="text-xs text-blue-800 list-decimal list-inside space-y-1">
-                    <li>3$ ödeyin</li>
-                    <li>Ödeme sonrası fatura/dekont numaranızı buraya girin</li>
+                    <li>$3 ödeyin</li>
+                    <li>Ödeme sonrası fatura/dekont numaranızı aşağıdaki forma girin</li>
                     <li>Ödeme onaylandıktan sonra indirme aktif olacak</li>
                   </ol>
                 </div>
