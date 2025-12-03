@@ -16,13 +16,18 @@
             <p class="mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
               Map of Us ile en özel anılarınızı, yapay zeka destekli benzersiz haritalara dönüştürün. Sevgiliniz veya aileniz için unutulmaz bir hediye.
             </p>
-            <div class="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
+            <div class="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start gap-3 flex-wrap">
               <div class="rounded-md shadow">
+                <a href="https://ruul.space/cuneytkaya/products/13347" target="_blank" rel="noopener noreferrer" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-green-600 hover:bg-green-700 md:py-4 md:text-lg md:px-10">
+                  Kartla Satın Al
+                </a>
+              </div>
+              <div class="rounded-md shadow mt-3 sm:mt-0">
                 <a href="/auth/register" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10">
                   Hemen Başla
                 </a>
               </div>
-              <div class="mt-3 sm:mt-0 sm:ml-3">
+              <div class="mt-3 sm:mt-0">
                 <a href="#how-it-works" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 md:py-4 md:text-lg md:px-10">
                   Nasıl Çalışır?
                 </a>
@@ -111,9 +116,14 @@
         <p class="mt-3 text-xl text-indigo-200 sm:mt-4">
           Yüksek çözünürlüklü, baskıya hazır dijital dosya.
         </p>
-        <a href="/auth/register" class="mt-8 w-full inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-indigo-600 bg-white hover:bg-indigo-50 sm:w-auto">
-          Hemen Başla
-        </a>
+        <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center items-center">
+          <a href="https://ruul.space/cuneytkaya/products/13347" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-green-600 hover:bg-green-700 shadow-lg">
+            Kartla Satın Al (Fatura ile)
+          </a>
+          <a href="/auth/register" class="w-full sm:w-auto inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-indigo-600 bg-white hover:bg-indigo-50">
+            Hemen Başla
+          </a>
+        </div>
       </div>
     </div>
   </div>
