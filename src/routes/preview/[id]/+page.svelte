@@ -6,6 +6,7 @@
   export let data;
   let { map, settings } = data;
   let ruulPaymentLink = settings?.ruul_payment_link || '';
+  const isAuthed = !!data?.session;
 
   let shareMessage = '';
   let origin = '';
@@ -121,11 +122,61 @@
 
               {#if map.order_status === 'pending' || (!map.order_status && map.payment_status !== 'completed')}
                 <p class="mt-2 text-sm text-gray-500">
-                  Önizlemeniz hazır. Ödeme adımı şu an kapalı; lütfen harita oluşturma/prompt sürecini tamamlayın veya destekle iletişime geçin.
+                  Önizlemeniz hazır. Ödeme ve fatura bilgisi girerek yüksek çözünürlüklü indirmeyi açabilirsiniz.
                 </p>
-                <div class="mt-4 bg-yellow-50 border border-yellow-200 rounded-md p-3 text-xs text-yellow-800">
-                  Kartla ödeme butonu kaldırıldı. Haritanızı finalize etmek için bize ulaşın.
-                </div>
+
+                {#if isAuthed && ruulPaymentLink}
+                  <div class="mt-4">
+                    <a
+                      href={ruulPaymentLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="w-full flex justify-center items-center px-4 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-purple-600 hover:bg-purple-700"
+                    >
+                      Kartla Öde (Ruul.io)
+                    </a>
+                  </div>
+
+                  <form on:submit|preventDefault={submitInvoice} class="mt-4 space-y-2">
+                    <div>
+                      <label for="invoice" class="block text-sm font-medium text-gray-700">
+                        Fatura/Dekont Numarası
+                      </label>
+                      <input
+                        type="text"
+                        id="invoice"
+                        bind:value={invoiceNumber}
+                        placeholder="Örn: INV-2024-001234"
+                        required
+                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                      />
+                    </div>
+
+                    {#if invoiceError}
+                      <p class="text-sm text-red-600">{invoiceError}</p>
+                    {/if}
+
+                    <button
+                      type="submit"
+                      disabled={isSubmitting || !invoiceNumber.trim()}
+                      class="w-full flex justify-center items-center px-4 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
+                    >
+                      {#if isSubmitting}
+                        Gönderiliyor...
+                      {:else}
+                        Fatura Numarasını Gönder
+                      {/if}
+                    </button>
+                  </form>
+                {:else}
+                  <div class="mt-4 bg-yellow-50 border border-yellow-200 rounded-md p-3 text-xs text-yellow-800">
+                    {#if !isAuthed}
+                      Ödeme için giriş yapın veya kayıt olun.
+                    {:else}
+                      Ödeme linki tanımlı değil. Lütfen destek ile iletişime geçin.
+                    {/if}
+                  </div>
+                {/if}
 
               {:else if map.order_status === 'invoice_submitted'}
                 <p class="mt-2 text-sm text-blue-600">

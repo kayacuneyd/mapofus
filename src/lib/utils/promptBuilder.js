@@ -26,15 +26,8 @@ const truncate = (txt = "", limit = 160) => {
 export function buildImagenPrompt(storyData) {
   const { story_text, theme, locations, start_date, aspect_ratio, qa_answers } = storyData;
 
-  const styleMap = {
-    romantic: "watercolor style with soft pink and gold tones, whimsical hand-drawn elements",
-    vintage: "aged paper texture, sepia tones, antique map aesthetic with decorative borders",
-    modern: "clean minimalist design, geometric shapes, contemporary color palette",
-    minimalist: "simple line art, limited color palette, elegant and understated"
-  };
-
-  const normalizedTheme = theme?.toLowerCase?.();
-  const style = styleMap[normalizedTheme] || styleMap.romantic;
+  // Single model: enforce minimalist line-art style regardless of theme selection
+  const style = "simple black and white line art, clean strokes, minimal shading, understated and print-friendly";
 
   const trimmedStory = (story_text || "").trim();
   const shortStory = trimmedStory || "Brief relationship highlights; keep it universal, warm, and hopeful.";
