@@ -1,5 +1,5 @@
 -- Users table (managed by Supabase Auth, extend if needed)
-CREATE TABLE public.profiles (
+CREATE TABLE IF NOT EXISTS public.profiles (
   id UUID REFERENCES auth.users PRIMARY KEY,
   email VARCHAR(255) NOT NULL,
   full_name VARCHAR(255),
@@ -8,7 +8,7 @@ CREATE TABLE public.profiles (
 );
 
 -- Maps table
-CREATE TABLE public.maps (
+CREATE TABLE IF NOT EXISTS public.maps (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
   story_text TEXT NOT NULL,
@@ -25,19 +25,21 @@ CREATE TABLE public.maps (
 );
 
 -- Indexes
-CREATE INDEX idx_maps_user_id ON public.maps(user_id);
-CREATE INDEX idx_maps_payment_status ON public.maps(payment_status);
-CREATE INDEX idx_maps_created_at ON public.maps(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_maps_user_id ON public.maps(user_id);
+CREATE INDEX IF NOT EXISTS idx_maps_payment_status ON public.maps(payment_status);
+CREATE INDEX IF NOT EXISTS idx_maps_created_at ON public.maps(created_at DESC);
 
 -- Row Level Security (RLS)
 ALTER TABLE public.maps ENABLE ROW LEVEL SECURITY;
 
 -- Policy: Users can only see their own maps
+DROP POLICY IF EXISTS "Users can view own maps" ON public.maps;
 CREATE POLICY "Users can view own maps"
   ON public.maps FOR SELECT
   USING (auth.uid() = user_id);
 
 -- Policy: Users can insert their own maps
+DROP POLICY IF EXISTS "Users can insert own maps" ON public.maps;
 CREATE POLICY "Users can insert own maps"
   ON public.maps FOR INSERT
   WITH CHECK (auth.uid() = user_id);
