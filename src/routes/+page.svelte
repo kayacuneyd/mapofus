@@ -2,8 +2,8 @@
   import { ArrowRight, Heart, Map, ShieldCheck } from 'lucide-svelte';
   import { t } from '$lib/i18n/i18n';
   
+  export let data;
   const PAYMENT_URL = 'https://ruul.space/cuneytkaya/products/13347';
-
   const steps = [
     {
       icon: Heart,
@@ -26,6 +26,8 @@
       descKey: 'steps.items.3.desc'
     }
   ];
+
+  const isAuthed = !!data?.session;
 </script>
 
 <div class="bg-white">
@@ -43,11 +45,13 @@
               {$t('hero.subtitle')}
             </p>
             <div class="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start gap-3 flex-wrap">
-              <div class="rounded-md shadow">
-                <a href={PAYMENT_URL} target="_blank" rel="noopener noreferrer" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-green-600 hover:bg-green-700 md:py-4 md:text-lg md:px-10">
-                  {$t('hero.ctaPurchase')}
-                </a>
-              </div>
+              {#if isAuthed}
+                <div class="rounded-md shadow">
+                  <a href={PAYMENT_URL} target="_blank" rel="noopener noreferrer" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-green-600 hover:bg-green-700 md:py-4 md:text-lg md:px-10">
+                    {$t('hero.ctaPurchase')}
+                  </a>
+                </div>
+              {/if}
               <div class="rounded-md shadow">
                 <a href="/auth/register" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10">
                   {$t('hero.ctaStart')}
@@ -109,12 +113,19 @@
           {$t('pricing.subtitle')}
         </p>
         <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center items-center">
-          <a href={PAYMENT_URL} target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-green-600 hover:bg-green-700 shadow-lg">
-            {$t('pricing.ctaPurchase')}
-          </a>
+          {#if isAuthed}
+            <a href={PAYMENT_URL} target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-green-600 hover:bg-green-700 shadow-lg">
+              {$t('pricing.ctaPurchase')}
+            </a>
+          {/if}
           <a href="/auth/register" class="w-full sm:w-auto inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-indigo-600 bg-white hover:bg-indigo-50">
             {$t('pricing.ctaStart')}
           </a>
+          {#if !isAuthed}
+            <p class="text-xs text-indigo-100 sm:ml-3 sm:text-left text-center">
+              Log in or sign up to unlock the purchase button.
+            </p>
+          {/if}
         </div>
       </div>
     </div>
