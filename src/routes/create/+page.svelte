@@ -160,7 +160,7 @@
 
           <div class="sm:col-span-6">
             <div class="flex items-center justify-between">
-              <label class="block text-sm font-medium text-gray-700">Rehber Sorular (6-10 adet)</label>
+              <p class="block text-sm font-medium text-gray-700">Rehber Sorular (6-10 adet)</p>
               <button
                 type="button"
                 class="text-sm text-indigo-600 hover:text-indigo-800 disabled:opacity-50"

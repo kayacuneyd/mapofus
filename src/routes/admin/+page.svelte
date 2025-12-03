@@ -336,7 +336,17 @@
 
 <!-- Detail Modal -->
 {#if selectedMap}
-  <div class="fixed z-10 inset-0 overflow-y-auto" on:click|self={closeModal}>
+  <div
+    class="fixed z-10 inset-0 overflow-y-auto"
+    role="button"
+    tabindex="0"
+    on:click|self={closeModal}
+    on:keydown={(e) => {
+      if (['Escape', 'Enter', ' '].includes(e.key)) {
+        closeModal();
+      }
+    }}
+  >
     <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
       <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
 
@@ -349,11 +359,11 @@
           <div class="space-y-4">
             <div class="grid grid-cols-2 gap-4">
               <div>
-                <label class="text-sm font-medium text-gray-500">Order ID</label>
+                <p class="text-sm font-medium text-gray-500">Order ID</p>
                 <p class="text-sm text-gray-900">{selectedMap.id}</p>
               </div>
               <div>
-                <label class="text-sm font-medium text-gray-500">Status</label>
+                <p class="text-sm font-medium text-gray-500">Status</p>
                 <p class="text-sm">
                   <span class="px-2 py-1 rounded-full {getStatusBadgeClass(getActualStatus(selectedMap))}">
                     {getStatusDisplay(selectedMap)}
@@ -364,8 +374,9 @@
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label class="text-sm font-medium text-gray-500">Yeni Durum Seç</label>
+                <label class="text-sm font-medium text-gray-500" for="status-select">Yeni Durum Seç</label>
                 <select
+                  id="status-select"
                   bind:value={selectedStatus}
                   class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 text-sm"
                 >
@@ -392,18 +403,18 @@
 
             {#if selectedMap.invoice_number}
               <div>
-                <label class="text-sm font-medium text-gray-500">Invoice Number</label>
+                <p class="text-sm font-medium text-gray-500">Invoice Number</p>
                 <p class="text-sm text-gray-900">{selectedMap.invoice_number}</p>
                 <p class="text-xs text-gray-500">Submitted: {formatDate(selectedMap.invoice_submitted_at)}</p>
               </div>
             {/if}
 
             <div>
-              <label class="text-sm font-medium text-gray-500">Story</label>
+              <p class="text-sm font-medium text-gray-500">Story</p>
               <p class="text-sm text-gray-900 mt-1">{selectedMap.story_text}</p>
             </div>
             <div>
-              <label class="text-sm font-medium text-gray-500">Thumbnail</label>
+              <p class="text-sm font-medium text-gray-500">Thumbnail</p>
               <img src={selectedMap.thumbnail_url} alt="Preview" class="mt-2 max-w-sm rounded border" />
             </div>
           </div>

@@ -1,6 +1,6 @@
 import { json } from '@sveltejs/kit';
 import { buildImagenPrompt } from '$lib/utils/promptBuilder';
-import { OPENAI_API_KEY, REPLICATE_API_TOKEN } from '$env/static/private';
+import { env } from '$env/dynamic/private';
 import { sendMail } from '$lib/utils/mailer';
 import sharp from 'sharp';
 import { z } from 'zod';
@@ -37,6 +37,7 @@ async function getImageProvider(supabase) {
 }
 
 async function generateImageWithOpenAI(prompt) {
+  const OPENAI_API_KEY = env.OPENAI_API_KEY;
   if (!OPENAI_API_KEY) {
     throw new Error('OPENAI_API_KEY env not set');
   }
@@ -84,6 +85,7 @@ async function generateImageWithOpenAI(prompt) {
 }
 
 async function generateImageWithReplicate(prompt) {
+  const REPLICATE_API_TOKEN = env.REPLICATE_API_TOKEN;
   if (!REPLICATE_API_TOKEN) {
     throw new Error('REPLICATE_API_TOKEN env not set');
   }
