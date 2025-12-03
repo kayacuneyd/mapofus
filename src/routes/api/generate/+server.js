@@ -310,8 +310,9 @@ export async function POST({ request, locals }) {
       `${basePath}/thumbnail.png`
     );
 
+    // HD download: standardized 1:1 aspect ratio for consistent prints
     const posterBuffer = await sharp(imageContent)
-      .resize({ width: 2480, height: 3508, fit: 'cover' })
+      .resize({ width: 2048, height: 2048, fit: 'cover' })
       .png()
       .toBuffer();
 
