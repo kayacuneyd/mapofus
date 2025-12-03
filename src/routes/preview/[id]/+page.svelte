@@ -1,5 +1,5 @@
 <script>
-  import { CreditCard, Download, ArrowLeft, Share2 } from 'lucide-svelte';
+  import { Download, ArrowLeft, Share2 } from 'lucide-svelte';
   import { onMount } from 'svelte';
   import { invalidate } from '$app/navigation';
 
@@ -121,71 +121,11 @@
 
               {#if map.order_status === 'pending' || (!map.order_status && map.payment_status !== 'completed')}
                 <p class="mt-2 text-sm text-gray-500">
-                  Yüksek çözünürlüklü (1024x1024) versiyonu indirmek için ödeme yapınız.
+                  Önizlemeniz hazır. Ödeme adımı şu an kapalı; lütfen harita oluşturma/prompt sürecini tamamlayın veya destekle iletişime geçin.
                 </p>
-
-                <!-- Ödeme Talimatları -->
-                <div class="mt-4 bg-blue-50 border border-blue-200 rounded-md p-3">
-                  <h5 class="text-sm font-medium text-blue-900 mb-2">Ödeme Talimatları:</h5>
-                  <ol class="text-xs text-blue-800 list-decimal list-inside space-y-1">
-                    <li>$3 ödeyin</li>
-                    <li>Ödeme sonrası fatura/dekont numaranızı aşağıdaki forma girin</li>
-                    <li>Ödeme onaylandıktan sonra indirme aktif olacak</li>
-                  </ol>
+                <div class="mt-4 bg-yellow-50 border border-yellow-200 rounded-md p-3 text-xs text-yellow-800">
+                  Kartla ödeme butonu kaldırıldı. Haritanızı finalize etmek için bize ulaşın.
                 </div>
-
-                <!-- Ruul.io Ödeme Butonu -->
-                {#if ruulPaymentLink}
-                  <div class="mt-4">
-                    <a
-                      href={ruulPaymentLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="w-full flex justify-center items-center px-4 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-purple-600 hover:bg-purple-700"
-                    >
-                      <CreditCard class="h-5 w-5 mr-2" />
-                      Ruul.io Ödeme
-                    </a>
-                  </div>
-                {:else}
-                  <div class="mt-4 bg-yellow-50 border border-yellow-200 rounded-md p-3 text-xs text-yellow-800">
-                    Ödeme linki henüz tanımlı değil. Lütfen destek ile iletişime geçin.
-                  </div>
-                {/if}
-
-                <!-- Fatura Numarası Formu -->
-                <form on:submit|preventDefault={submitInvoice} class="mt-4 space-y-2">
-                  <div>
-                    <label for="invoice" class="block text-sm font-medium text-gray-700">
-                      Fatura/Dekont Numarası
-                    </label>
-                    <input
-                      type="text"
-                      id="invoice"
-                      bind:value={invoiceNumber}
-                      placeholder="Örn: INV-2024-001234"
-                      required
-                      class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                    />
-                  </div>
-
-                  {#if invoiceError}
-                    <p class="text-sm text-red-600">{invoiceError}</p>
-                  {/if}
-
-                  <button
-                    type="submit"
-                    disabled={isSubmitting || !invoiceNumber.trim()}
-                    class="w-full flex justify-center items-center px-4 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
-                  >
-                    {#if isSubmitting}
-                      Gönderiliyor...
-                    {:else}
-                      <CreditCard class="h-5 w-5 mr-2" />
-                      Fatura Numarasını Gönder
-                    {/if}
-                  </button>
-                </form>
 
               {:else if map.order_status === 'invoice_submitted'}
                 <p class="mt-2 text-sm text-blue-600">

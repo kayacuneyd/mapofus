@@ -1,5 +1,5 @@
 <script>
-  import { Plus, Download, CreditCard, Clock, Map, Share2 } from 'lucide-svelte';
+  import { Plus, Download, Clock, Map, Share2 } from 'lucide-svelte';
   import { onMount } from 'svelte';
   
   export let data;
@@ -99,8 +99,7 @@
                   </a>
                 {:else}
                   <a href="/preview/{map.id}" class="w-full inline-flex justify-center items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                    <CreditCard class="h-4 w-4 mr-2" />
-                    Ödeme Yap
+                    Önizle
                   </a>
                 {/if}
                 <div class="space-y-1">
