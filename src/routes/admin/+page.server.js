@@ -51,12 +51,14 @@ export async function load({ locals }) {
 
   // If settings don't exist, use default
   const imageProvider = settings?.image_provider || 'openai';
+  const ruulPaymentLink = settings?.ruul_payment_link || null;
   
   return {
     maps: maps || [],
     session,
     settings: {
-      image_provider: imageProvider
+      image_provider: imageProvider,
+      ruul_payment_link: ruulPaymentLink
     }
   };
 }

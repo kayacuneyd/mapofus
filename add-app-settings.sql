@@ -6,6 +6,7 @@
 CREATE TABLE IF NOT EXISTS public.app_settings (
   id VARCHAR(100) PRIMARY KEY DEFAULT 'main',
   image_provider VARCHAR(50) DEFAULT 'openai' CHECK (image_provider IN ('openai', 'replicate')),
+  ruul_payment_link TEXT,
   updated_at TIMESTAMP DEFAULT NOW(),
   updated_by UUID REFERENCES auth.users(id)
 );
@@ -36,4 +37,3 @@ CREATE POLICY "Users can read app settings"
   ON public.app_settings FOR SELECT
   TO authenticated
   USING (true);
-

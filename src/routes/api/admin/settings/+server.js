@@ -3,7 +3,8 @@ import { z } from 'zod';
 import { requireAdmin } from '$lib/utils/adminAuth.js';
 
 const updateSettingsSchema = z.object({
-  image_provider: z.enum(['openai', 'replicate'])
+  image_provider: z.enum(['openai', 'replicate']),
+  ruul_payment_link: z.string().url().min(5).optional().nullable()
 });
 
 // GET: Read current settings
@@ -40,6 +41,7 @@ export async function GET({ locals }) {
   return json(data || {
     id: 'main',
     image_provider: 'openai',
+    ruul_payment_link: null,
     updated_at: null,
     updated_by: null
   });
@@ -68,7 +70,7 @@ export async function PATCH({ request, locals }) {
     }, { status: 400 });
   }
 
-  const { image_provider } = result.data;
+  const { image_provider, ruul_payment_link } = result.data;
 
   // Upsert settings
   const { data, error } = await locals.supabase
@@ -76,6 +78,7 @@ export async function PATCH({ request, locals }) {
     .upsert({
       id: 'main',
       image_provider,
+      ruul_payment_link: ruul_payment_link || null,
       updated_at: new Date().toISOString(),
       updated_by: session.user.id
     }, {
@@ -91,9 +94,9 @@ export async function PATCH({ request, locals }) {
 
   console.log('Settings updated:', {
     image_provider,
+    ruul_payment_link,
     updated_by: session.user.id
   });
 
   return json({ success: true, settings: data });
 }
-

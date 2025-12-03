@@ -4,7 +4,8 @@
   import { invalidate } from '$app/navigation';
 
   export let data;
-  let { map } = data;
+  let { map, settings } = data;
+  let ruulPaymentLink = settings?.ruul_payment_link || '';
 
   let shareMessage = '';
   let origin = '';
@@ -134,17 +135,23 @@
                 </div>
 
                 <!-- Ruul.io Ödeme Butonu -->
-                <div class="mt-4">
-                  <a
-                    href="https://ruul.space/cuneytkaya/products/13347"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="w-full flex justify-center items-center px-4 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-purple-600 hover:bg-purple-700"
-                  >
-                    <CreditCard class="h-5 w-5 mr-2" />
-                    Ruul.io Ödeme
-                  </a>
-                </div>
+                {#if ruulPaymentLink}
+                  <div class="mt-4">
+                    <a
+                      href={ruulPaymentLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="w-full flex justify-center items-center px-4 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-purple-600 hover:bg-purple-700"
+                    >
+                      <CreditCard class="h-5 w-5 mr-2" />
+                      Ruul.io Ödeme
+                    </a>
+                  </div>
+                {:else}
+                  <div class="mt-4 bg-yellow-50 border border-yellow-200 rounded-md p-3 text-xs text-yellow-800">
+                    Ödeme linki henüz tanımlı değil. Lütfen destek ile iletişime geçin.
+                  </div>
+                {/if}
 
                 <!-- Fatura Numarası Formu -->
                 <form on:submit|preventDefault={submitInvoice} class="mt-4 space-y-2">

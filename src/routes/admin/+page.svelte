@@ -27,7 +27,9 @@
 
   // Settings state
   let imageProvider = settings?.image_provider || 'openai';
+  let ruulPaymentLink = settings?.ruul_payment_link || '';
   let isUpdatingProvider = false;
+  let isUpdatingPaymentLink = false;
 
   $: filteredMaps = maps.filter(map => {
     const matchesStatus = statusFilter === 'all' || map.order_status === statusFilter || (!map.order_status && statusFilter === 'pending');
@@ -129,20 +131,23 @@
   $: notesChanged = selectedMap && (adminNotes || '') !== getCurrentAdminNotes(selectedMap);
   $: hasPendingChanges = hasStatusChanged || notesChanged;
 
-  async function toggleImageProvider() {
-    const newProvider = imageProvider === 'openai' ? 'replicate' : 'openai';
+  async function saveSettings(nextProvider = imageProvider, nextLink = ruulPaymentLink) {
     isUpdatingProvider = true;
-    
+    isUpdatingPaymentLink = true;
     try {
       const response = await fetch('/api/admin/settings', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ image_provider: newProvider })
+        body: JSON.stringify({
+          image_provider: nextProvider,
+          ruul_payment_link: nextLink || null
+        })
       });
 
       if (response.ok) {
-        imageProvider = newProvider;
-        alert(`Görsel üretimi artık ${newProvider === 'openai' ? 'OpenAI' : 'Replicate'} ile yapılacak.`);
+        imageProvider = nextProvider;
+        ruulPaymentLink = nextLink || '';
+        alert('Ayarlar güncellendi.');
       } else {
         const error = await response.json();
         alert('Hata: ' + (error.error || 'Ayarlar güncellenemedi'));
@@ -151,7 +156,17 @@
       alert('Ağ hatası: ' + err.message);
     } finally {
       isUpdatingProvider = false;
+      isUpdatingPaymentLink = false;
     }
+  }
+
+  async function toggleImageProvider() {
+    const newProvider = imageProvider === 'openai' ? 'replicate' : 'openai';
+    await saveSettings(newProvider, ruulPaymentLink);
+  }
+
+  async function updatePaymentLink() {
+    await saveSettings(imageProvider, ruulPaymentLink);
   }
 </script>
 
@@ -179,6 +194,33 @@
     </div>
     <p class="text-xs text-gray-400 mt-2">
       {imageProvider === 'openai' ? 'Replicate\'e geçmek için toggle\'a tıklayın' : 'OpenAI\'ye geçmek için toggle\'a tıklayın'}
+    </p>
+  </div>
+
+  <div class="mb-6 bg-white shadow rounded-lg p-4 border border-gray-200">
+    <div class="flex items-center justify-between gap-4">
+      <div class="flex-1">
+        <h3 class="text-sm font-medium text-gray-900">Ruul.io Ödeme Linki</h3>
+        <p class="text-xs text-gray-500 mt-1">
+          Kullanıcılar ödeme için bu linke yönlendirilecek. Boş bırakılırsa ödeme butonu gösterilmez.
+        </p>
+        <input
+          type="url"
+          placeholder="https://ruul.space/..."
+          bind:value={ruulPaymentLink}
+          class="mt-2 w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
+        />
+      </div>
+      <button
+        on:click={updatePaymentLink}
+        class="px-4 py-2 bg-indigo-600 text-white rounded-md text-sm h-10 self-end disabled:opacity-50"
+        disabled={isUpdatingPaymentLink}
+      >
+        Kaydet
+      </button>
+    </div>
+    <p class="text-xs text-gray-400 mt-2">
+      Ödeme linkini değiştirdiğinizde tüm kullanıcılar yeni linke yönlenir.
     </p>
   </div>
 

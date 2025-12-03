@@ -20,5 +20,16 @@ export async function load({ params, locals }) {
     throw error(403, 'Forbidden');
   }
 
-  return { map };
+  const { data: settings } = await locals.supabase
+    .from('app_settings')
+    .select('ruul_payment_link')
+    .eq('id', 'main')
+    .maybeSingle();
+
+  return {
+    map,
+    settings: {
+      ruul_payment_link: settings?.ruul_payment_link || null
+    }
+  };
 }
