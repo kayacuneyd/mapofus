@@ -127,10 +127,23 @@
                 <div class="mt-4 bg-blue-50 border border-blue-200 rounded-md p-3">
                   <h5 class="text-sm font-medium text-blue-900 mb-2">Ödeme Talimatları:</h5>
                   <ol class="text-xs text-blue-800 list-decimal list-inside space-y-1">
-                    <li>Banka transferi ile 299 TL ödeme yapın</li>
+                    <li>3$ ödeyin</li>
                     <li>Ödeme sonrası fatura/dekont numaranızı buraya girin</li>
                     <li>Ödeme onaylandıktan sonra indirme aktif olacak</li>
                   </ol>
+                </div>
+
+                <!-- Ruul.io Ödeme Butonu -->
+                <div class="mt-4">
+                  <a
+                    href="https://ruul.space/cuneytkaya/products/13347"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="w-full flex justify-center items-center px-4 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-purple-600 hover:bg-purple-700"
+                  >
+                    <CreditCard class="h-5 w-5 mr-2" />
+                    Ruul.io Ödeme
+                  </a>
                 </div>
 
                 <!-- Fatura Numarası Formu -->
