@@ -59,8 +59,8 @@ export const translations = {
       language: 'Dil'
     },
     hero: {
-      title1: 'Dönüştürün İlişki Hikayenizi',
-      title2: 'Sanat Eserine',
+      title1: 'İlişkinizi Sanat',
+      title2: 'Eserine Dönüştürün',
       subtitle:
         'Map of Us ile en özel anılarınızı, yapay zeka destekli benzersiz haritalara dönüştürün. Sevgiliniz veya aileniz için unutulmaz bir hediye.',
       ctaPurchase: 'Kartla Satın Al',
