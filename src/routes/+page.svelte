@@ -1,5 +1,7 @@
 <script>
   import { ArrowRight, Heart, Map, ShieldCheck } from 'lucide-svelte';
+  
+  const PAYMENT_URL = 'https://ruul.space/cuneytkaya/products/13347';
 </script>
 
 <div class="bg-white">
@@ -18,7 +20,7 @@
             </p>
             <div class="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start gap-3 flex-wrap">
               <div class="rounded-md shadow">
-                <a href="https://ruul.space/cuneytkaya/products/13347" target="_blank" rel="noopener noreferrer" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-green-600 hover:bg-green-700 md:py-4 md:text-lg md:px-10">
+                <a href={PAYMENT_URL} target="_blank" rel="noopener noreferrer" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-green-600 hover:bg-green-700 md:py-4 md:text-lg md:px-10">
                   Kartla Satın Al
                 </a>
               </div>
@@ -117,7 +119,7 @@
           Yüksek çözünürlüklü, baskıya hazır dijital dosya.
         </p>
         <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center items-center">
-          <a href="https://ruul.space/cuneytkaya/products/13347" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-green-600 hover:bg-green-700 shadow-lg">
+          <a href={PAYMENT_URL} target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-green-600 hover:bg-green-700 shadow-lg">
             Kartla Satın Al (Fatura ile)
           </a>
           <a href="/auth/register" class="w-full sm:w-auto inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-indigo-600 bg-white hover:bg-indigo-50">
