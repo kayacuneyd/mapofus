@@ -43,7 +43,7 @@ export const translations = {
       ]
     },
     pricing: {
-      title: 'Only ₺299',
+      title: 'Only 3$',
       subtitle: 'High-resolution, print-ready digital file.',
       ctaPurchase: 'Buy with Card (Invoice)',
       ctaStart: 'Start Now'
@@ -90,7 +90,7 @@ export const translations = {
       ]
     },
     pricing: {
-      title: 'Sadece ₺299',
+      title: 'Sadece 3$',
       subtitle: 'Yüksek çözünürlüklü, baskıya hazır dijital dosya.',
       ctaPurchase: 'Kartla Satın Al (Fatura ile)',
       ctaStart: 'Hemen Başla'
@@ -137,7 +137,7 @@ export const translations = {
       ]
     },
     pricing: {
-      title: 'Nur ₺299',
+      title: 'Nur 3$',
       subtitle: 'Hochauflösende, druckfertige digitale Datei.',
       ctaPurchase: 'Mit Karte kaufen (Rechnung)',
       ctaStart: 'Jetzt starten'
